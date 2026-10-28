@@ -113,6 +113,7 @@ h2{
   text-transform:uppercase;
 }
 .cast small{color:var(--muted);font-size:.82rem;line-height:1.35;display:block;margin-top:.15rem}
+.cast .aktor{display:block;font-size:.78rem;font-weight:600;color:var(--red);margin-top:.12rem}
 .cast-note{color:var(--muted);font-size:.9rem;margin:.7rem 0 0}
 
 .scene{margin-top:2.6rem}
@@ -586,28 +587,28 @@ footer .stamp{margin-bottom:1rem}
 </footer>
 
 <div class="rolebar" id="rolebar" role="status" aria-live="polite">
-  <span>Twoja rola: <b id="rola-nazwa"></b> • kwestii: <span id="rola-liczba">0</span></span>
+  <span>Twoja rola: <b id="rola-nazwa"></b> <span id="rola-aktor"></span> • kwestii: <span id="rola-liczba">0</span></span>
   <button type="button" id="rola-off">Wyłącz</button>
 </div>
 
 <script>
 (function(){
   var CAST=[
-    ["LEKTOR","narrator; siada z boku, komentuje z dystansem"],
-    ["ROMAN","piekarz; pewny siebie, głośny, łatwo się wkurza"],
-    ["BASIA","dżemy i zeszyt; wszystko zapisuje, nawet marginesy"],
-    ["KAŚKA","złośliwa obserwatorka; lubi patrzeć, jak Roman się wkurza"],
-    ["BABCIA STEFANIA","targuje się o wszystko; od razu węszy zmowę"],
-    ["PAN ZBYSZEK","tęskni za kolejkami; ustawia się do niczego"],
-    ["MELA","panika na pokładzie; potem głęboki oddech"],
-    ["PANI HALINKA","plotka pierwsza; wszystko zapisuje"],
-    ["PANI BOŻENKA","plotka druga; przewiduje ślub"],
-    ["MIREK","listonosz; śpiewa, bo tak go słychać"],
-    ["GRAŻYNA","urząd; regulamin, medal i zero dyskusji"],
-    ["JUREK","dzwonek i breaking newsy"],
-    ["DAREK","pomysłodawca rogalików z dżemem"],
-    ["KUBA","hulajnoga; wszystko widzi, wszystkiego dowie"],
-    ["GUCIO","gołąb; złodziej z trzyletnim dorobkiem"]
+    ["LEKTOR","narrator; siada z boku, komentuje z dystansem","Aleksandra Kisiel"],
+    ["ROMAN","piekarz; pewny siebie, głośny, łatwo się wkurza","Filip Kozioł"],
+    ["BASIA","dżemy i zeszyt; wszystko zapisuje, nawet marginesy","Dawid Sapkowski"],
+    ["KAŚKA","złośliwa obserwatorka; lubi patrzeć, jak Roman się wkurza","Aleksandra Kisiel"],
+    ["BABCIA STEFANIA","targuje się o wszystko; od razu węszy zmowę","Кирилл Осипов"],
+    ["PAN ZBYSZEK","tęskni za kolejkami; ustawia się do niczego","Kacper Kirejczyk"],
+    ["MELA","panika na pokładzie; potem głęboki oddech","Bartek Sienko"],
+    ["PANI HALINKA","plotka pierwsza; wszystko zapisuje","Barbara Sanik"],
+    ["PANI BOŻENKA","plotka druga; przewiduje ślub","Nikola Kopeć"],
+    ["MIREK","listonosz; śpiewa, bo tak go słychać","Agata Augustynowicz"],
+    ["GRAŻYNA","urząd; regulamin, medal i zero dyskusji","Amelia Kosińska"],
+    ["JUREK","dzwonek i breaking newsy","Gabryś Marchel"],
+    ["DAREK","pomysłodawca rogalików z dżemem","Gabriel Vcs"],
+    ["KUBA","hulajnoga; wszystko widzi, wszystkiego dowie","Anita Sobolewska"],
+    ["GUCIO","gołąb; złodziej z trzyletnim dorobkiem","Evelina"]
   ];
   var list=document.getElementById('cast');
   CAST.forEach(function(c){
@@ -616,13 +617,14 @@ footer .stamp{margin-bottom:1rem}
     b.type='button';
     b.setAttribute('aria-pressed','false');
     b.dataset.role=c[0];
-    b.innerHTML='<b>'+c[0]+'</b><small>'+c[1]+'</small>';
+    b.innerHTML='<b>'+c[0]+'</b><span class="aktor">'+c[2]+'</span><small>'+c[1]+'</small>';
     li.appendChild(b);
     list.appendChild(li);
   });
 
   var bar=document.getElementById('rolebar');
   var nameEl=document.getElementById('rola-nazwa');
+  var aktorEl=document.getElementById('rola-aktor');
   var countEl=document.getElementById('rola-liczba');
   var lines=Array.prototype.slice.call(document.querySelectorAll('.line'));
   function count(role){
@@ -637,6 +639,8 @@ footer .stamp{margin-bottom:1rem}
     document.body.dataset.role=role;
     lines.forEach(function(l){l.classList.toggle('mine',l.dataset.sp===role);});
     nameEl.textContent=role;
+    var actor=CAST.filter(function(c){return c[0]===role;})[0];
+    aktorEl.textContent=actor&&actor[2]?('( '+actor[2]+' )'):'';
     countEl.textContent=count(role);
     bar.classList.add('on');
   }
